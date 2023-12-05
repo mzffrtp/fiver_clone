@@ -14,13 +14,26 @@ const userSchema = new mongoose.Schema({
         lowerCase: true,
         validate: [validator.isEmail, "Please enter a valid email!"]
     },
+    password: {
+        type: String,
+        required: [true, 'Lütfen şifre alanını gönderiniz'],
+        select: false,
+    },
+    img: {
+        type: String,
+        required: false
+    },
     country: {
         type: String,
         required: [true, "Please provide a country name!"]
     },
     phone: {
         type: String,
-        required: [true, "Please provide a phone name!"]
+        required: false
+    },
+    desc: {
+        type: String,
+        required: false
     },
     isSeller: {
         type: Boolean,
@@ -29,5 +42,4 @@ const userSchema = new mongoose.Schema({
 },
     { timestamps: true })
 
-const User = mongoose.model("User", userSchema);
-module.exports = User
+export default mongoose.model("User", userSchema);
