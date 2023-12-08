@@ -3,9 +3,12 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import userRouter from "./routes/userRoutes.js";
 import authRouter from "./routes/authRoutes.js";
+import cookiePrser from "cookie-parser";
 
 const app = express()
 app.use(express.json())
+app.use(cookiePrser())
+
 dotenv.config();
 
 const DB = process.env.DATABASE.replace("<PASS>", process.env.DATABASE_PASS);

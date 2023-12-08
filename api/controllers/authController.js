@@ -1,6 +1,7 @@
 import express from "express";
 import User from "../models/userModel.js"
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const register = async (req, res, next) => {
     try {
@@ -34,11 +35,26 @@ export const login = async (req, res, next) => {
 
         //! DO NOT SEND PASSWORD TO FRONT-END
         user.password = null
-        res.status(201).json({
-            status: "success",
-            message: "User logedin succesfully!",
-            data: { user }
-        })
+
+        //!JWT Token
+        const token = jwt.sign(
+            {
+                id: user._id,
+                isSeller: user.isSeller
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_EXPIRES }
+        )
+
+        res
+            .cookie("accessToken", token, {
+                httpOnly: true
+            })
+            .status(201).json({
+                status: "success",
+                message: "User logedin succesfully!",
+                data: { user }
+            })
     } catch (error) {
         next(console.log(error))
     }
