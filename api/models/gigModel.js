@@ -20,7 +20,7 @@ const gigSchema = new mongoose.Schema({
         type: Number,
         min: 1,
         max: 5,
-        required: [true, "Avarage rating shouldn´t be blank!"]
+        default: 3
     },
     totalRating: {
         type: Number,
@@ -32,10 +32,10 @@ const gigSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
-        required: [true, "Price shouldn´t be blank!"]
+        required: false
     },
     cover: {
-        type: string,
+        type: String,
         required: false
     },
     images: {

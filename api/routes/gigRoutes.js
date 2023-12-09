@@ -1,8 +1,13 @@
 import express from "express"
-import { deleteGig } from "../controllers/gigController.js";
+import { createGig, deleteGig, getAllGigs, getGig } from "../controllers/gigController.js";
+import { verifyToken } from "../middlewares/jwtVerify.js";
 
 const gigRouter = express.Router();
 
-gigRouter.delete("/delete", deleteGig)
+gigRouter.post("/", verifyToken, createGig)
+gigRouter.delete("/delete/:id", verifyToken, deleteGig)
+gigRouter.get("/single/:id", getGig)
+gigRouter.get("/", getAllGigs)
+
 
 export default gigRouter
