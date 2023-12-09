@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from "axios"
 import apiAxios from "../utils/api"
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify"
@@ -27,8 +28,10 @@ const RegisterPage = () => {
     const formData = Object.fromEntries(form.entries());
 
     //photo uploading , url
-    const photoUrl = await upload(formData.photo);
-    formData.photo = photoUrl
+    const imgUrl = await upload(formData.img);
+    formData.img = imgUrl
+    console.log(imgUrl);
+    console.log(formData.img);
 
     //
     formData.isSeller = isChecked
@@ -37,7 +40,16 @@ const RegisterPage = () => {
       .post("/auth/register", formData, { withCredentials: true })
       .then((res) => {
         navigate("/login")
-        toast.success("Account registered. Please login!")
+        toast('Account registered, please log in!', {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       })
       .catch(() => {
         toast.success("An error occured, please try again!")
@@ -79,8 +91,8 @@ const RegisterPage = () => {
             <label
               className="block mb-2 text-sm font-medium text-gray-900">Photo</label>
             <input
-              name='photo'
-              type="file" id="photo"
+              name='img'
+              type="file" id="img"
               placeholder="your photo"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required />
           </div>
@@ -133,7 +145,7 @@ const RegisterPage = () => {
           </div>
         </div>
         <div className='col-span-2 flex justify-center'>
-          <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center min-w-[200px]">Submit</button>
+          <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center min-w-[200px]">Register</button>
         </div>
       </form>
     </div>
