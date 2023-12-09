@@ -2,6 +2,7 @@ import express from "express";
 import User from "../models/userModel.js"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import error from "../utils/error.js"
 
 export const register = async (req, res, next) => {
     try {
@@ -12,8 +13,8 @@ export const register = async (req, res, next) => {
             message: "User registered!",
             data: { newUser }
         })
-    } catch (error) {
-        next(console.log(error))
+    } catch (err) {
+        next(error(400, "An error occured during register"))
     }
 };
 export const login = async (req, res, next) => {
@@ -22,7 +23,7 @@ export const login = async (req, res, next) => {
 
         if (!user) return res.status(404).send("User not found!")
 
-        if (!req.body.password) return res.status(400).send("Password is required!")
+        if (!req.body.password) return next(error(404, "User not found!"))
 
         // Ensure user.password contains a valid bcrypt hash
         if (!user.password || typeof user.password !== 'string') {
@@ -31,7 +32,7 @@ export const login = async (req, res, next) => {
 
         const isCorrectPass = bcrypt.compareSync(req.body.password, user.password)
 
-        if (!isCorrectPass) return res.status(404).send("Email or password is not correct!")
+        if (!isCorrectPass) return next(error(404, "Email or password is not correct!"))
 
         //! DO NOT SEND PASSWORD TO FRONT-END
         user.password = null
@@ -55,10 +56,13 @@ export const login = async (req, res, next) => {
                 message: "User logedin succesfully!",
                 data: { user }
             })
-    } catch (error) {
-        next(console.log(error))
+    } catch (err) {
+        next(err)
     }
 };
-export const logout = () => {
-
+export const logout = (rew, res, nezt) => {
+    //! clear cookie
+    res.clearCookie("accessToken").status(200).json({
+        messasge: "Successfull logout!"
+    })
 };

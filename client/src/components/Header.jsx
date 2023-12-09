@@ -36,10 +36,9 @@ const Header = () => {
                     currentUser.isSeller && (
                       <>
                         <Link className='hover:font-bold hover:bg-lime-300'>Your Gigs</Link>
-                        <Link className='hover:font-bold hover:bg-lime-300'>New gig?</Link>
+                        <Link className='hover:font-bold hover:bg-lime-300 whitespace-nowrap'>Add new gig?</Link>
                       </>
                     )
-
                   }
                   <Link className='hover:font-bold hover:bg-lime-300'>Gigs</Link>
                   <Link className='hover:font-bold hover:bg-lime-300'>Messages</Link>
